@@ -17,7 +17,7 @@ public class Controller2D : MonoBehaviour
     [Range(0, 12)] [SerializeField] private int vRayCount = 4;
     private float hRaySpacing, vRaySpacing;
 
-    private BoxCollider2D collider;
+    new private BoxCollider2D collider;
     private RaycastOrigins origins;
     public Collisions collisions;
 

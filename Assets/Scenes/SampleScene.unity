@@ -477,6 +477,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c689f4a5a67f994fa6ea49f7bfdb1a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 6
+  smoothTimeAirborne: 0.2
+  smoothTimeGrounded: 0.1
+  maxJumpHeight: 4
+  timeToMaxHeight: 0.4
 --- !u!50 &2118204467
 Rigidbody2D:
   serializedVersion: 4
@@ -601,8 +606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b75223a63174b4ba47eec38de795ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionMask:
+  debugMode: 1
+  collidable:
     serializedVersion: 2
     m_Bits: 512
-  horizontalRayCount: 4
-  verticalRayCount: 4
+  hRayCount: 4
+  vRayCount: 4
