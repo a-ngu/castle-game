@@ -17,13 +17,15 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] private float timeToMaxHeight = .4f;
     private float gravity;
     private float initJumpVelocity;
+    // Jumping
+    [Range(0, 1)] [SerializeField] private float jumpReleaseDamping = 0.5f;
     
     [Header("Input Settings")]
-    [SerializeField] private float statePersistance = .1f;
+    [SerializeField] private float statePersistance = .2f;
     // State Tracking
     private Vector2 input;
     private float jumpTimer, groundedTimer;
-    private bool jumping;
+    private bool jumping, canDoubleJump, cutJump;
     private Vector3 prevVelocity, velocity;
 
     // Component Tracking
@@ -38,19 +40,35 @@ public class PlayerController2D : MonoBehaviour
     // Check for user imput
     private void Update() {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (Input.GetKey(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             jumpTimer = statePersistance;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            cutJump = true;
         }
         if (controller.collisions.below) {
             groundedTimer = statePersistance;
         }
         if (jumpTimer > 0 && groundedTimer > 0) {
+            jumping = canDoubleJump = true;
+            jumpTimer = -1;
+            groundedTimer = -1;
+        } 
+        
+        if (jumpTimer > 0 && groundedTimer <= 0 && canDoubleJump)
+        {
             jumping = true;
-            jumpTimer = 0;
-            groundedTimer = 0;
-        } else if (jumpTimer > 0) {
+            canDoubleJump = false;
+            jumpTimer = -1;
+        }
+
+        if (jumpTimer > 0)
+        {
             jumpTimer -= Time.deltaTime;
-        } else if (groundedTimer > 0) {
+        }
+        if (groundedTimer > 0)
+        {
             groundedTimer -= Time.deltaTime;
         }
     }
@@ -68,7 +86,16 @@ public class PlayerController2D : MonoBehaviour
         }
         if (jumping) {
             jumping = false;
+            Debug.Log(canDoubleJump);
             velocity.y = initJumpVelocity;
+        }
+        if (cutJump)
+        {
+            cutJump = false;
+            if (velocity.y > 0)
+            {
+                velocity.y *= jumpReleaseDamping;     // Maybe serialize later
+            }
         }
         velocity.y += gravity * Time.fixedDeltaTime;
 
