@@ -13,7 +13,7 @@ public class Controller2D : RaycastController
         base.Start();
     }
 
-    public void Move(Vector3 motion) {
+    public void Move(Vector3 motion, bool onPlatform = false) {
         CalculateOrigins();
         collisions.Reset();
 
@@ -24,6 +24,10 @@ public class Controller2D : RaycastController
             detectCollisionVert(ref motion);
         }
         transform.Translate(motion);
+
+        if (onPlatform) {
+            collisions.below = true;
+        }
     }
 
     // Detect and adjust horizontal motion based on raycast collisions.
@@ -40,7 +44,7 @@ public class Controller2D : RaycastController
             if (debugMode) {
                 Debug.DrawRay(origin, Vector2.right * xDir * rayLen, Color.red, .01f);
             }
-            if (hit) {
+            if (hit && hit.distance != 0) {
                 rayLen = hit.distance;
                 motion.x = (rayLen - rayMargin) * xDir;
 
@@ -75,6 +79,7 @@ public class Controller2D : RaycastController
         }
     }
 
+    // Track collision status
     public struct Collisions {
         public bool left, right, above, below;
         public void Reset() {
