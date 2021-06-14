@@ -17,10 +17,13 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] private float timeToMaxHeight = .4f;
     private float gravity;
     private float initJumpVelocity;
-
+    
+    [Header("Input Settings")]
+    [SerializeField] private float statePersistance = .1f;
     // State Tracking
     private Vector2 input;
-    private bool jumpPressed;
+    private float jumpTimer, groundedTimer;
+    private bool jumping;
     private Vector3 prevVelocity, velocity;
 
     // Component Tracking
@@ -35,8 +38,20 @@ public class PlayerController2D : MonoBehaviour
     // Check for user imput
     private void Update() {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (Input.GetKey(KeyCode.Space) && controller.collisions.below) {
-            jumpPressed = true;
+        if (Input.GetKey(KeyCode.Space)) {
+            jumpTimer = statePersistance;
+        }
+        if (controller.collisions.below) {
+            groundedTimer = statePersistance;
+        }
+        if (jumpTimer > 0 && groundedTimer > 0) {
+            jumping = true;
+            jumpTimer = 0;
+            groundedTimer = 0;
+        } else if (jumpTimer > 0) {
+            jumpTimer -= Time.deltaTime;
+        } else if (groundedTimer > 0) {
+            groundedTimer -= Time.deltaTime;
         }
     }
 
@@ -51,8 +66,8 @@ public class PlayerController2D : MonoBehaviour
         if (controller.collisions.above || controller.collisions.below) {
             velocity.y = 0;
         }
-        if (jumpPressed) {
-            jumpPressed = false;
+        if (jumping) {
+            jumping = false;
             velocity.y = initJumpVelocity;
         }
         velocity.y += gravity * Time.fixedDeltaTime;
