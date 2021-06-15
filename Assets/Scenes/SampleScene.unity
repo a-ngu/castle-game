@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 286563504}
   - component: {fileID: 286563503}
   - component: {fileID: 286563502}
-  - component: {fileID: 286563506}
+  - component: {fileID: 286563505}
   m_Layer: 9
   m_Name: Platform
   m_TagString: Untagged
@@ -342,7 +342,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &286563506
+--- !u!114 &286563505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -351,25 +351,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 286563501}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29c20c34bb1ce314fa3935af6343e198, type: 3}
+  m_Script: {fileID: 11500000, guid: db205fa09c0ed77458c38fb15c23c67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collidable:
     serializedVersion: 2
-    m_Bits: 256
-  hRayCount: 4
-  vRayCount: 15
+    m_Bits: 0
+  raySpacing: 0.25
   moveableLayer:
     serializedVersion: 2
     m_Bits: 0
-  relWaypoints:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 3, z: 0}
-  - {x: -3, y: 3, z: 0}
-  waypointsVisible: 1
+  showWaypoints: 1
+  relativePositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 2}
+  - {x: -2, y: 2}
   cyclic: 1
-  waitTime: 1
-  speed: 2
+  waitTime: 0.5
+  movementSpeed: 3
 --- !u!1 &313639353
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,9 +572,9 @@ GameObject:
   - component: {fileID: 2118204470}
   - component: {fileID: 2118204469}
   - component: {fileID: 2118204468}
+  - component: {fileID: 2118204467}
   - component: {fileID: 2118204471}
   - component: {fileID: 2118204466}
-  - component: {fileID: 2118204467}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -592,15 +591,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2118204465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c689f4a5a67f994fa6ea49f7bfdb1a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 18f313e62b98f354cafde66d5bf5a9eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 6
-  smoothTimeAirborne: 0.2
-  smoothTimeGrounded: 0.1
   maxHeight: 4
   timeToMaxHeight: 0.4
-  jumpReleaseDamping: 0.7
+  endJumpDamping: 0.5
+  smoothTimeAirborne: 0.2
+  smoothTimeGrounded: 0.1
   statePersistance: 0.2
 --- !u!50 &2118204467
 Rigidbody2D:
@@ -723,12 +722,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2118204465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7b75223a63174b4ba47eec38de795ff, type: 3}
+  m_Script: {fileID: 11500000, guid: f0c1a062301aab94d9a986d74676ab3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collidable:
     serializedVersion: 2
     m_Bits: 512
-  hRayCount: 4
-  vRayCount: 4
+  raySpacing: 0.25
   debugMode: 1
