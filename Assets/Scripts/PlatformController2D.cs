@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,17 +30,17 @@ public class PlatformController2D : RaycastBody2D
         absolutePositions = new Vector2[waypointCount];
         for (int i = 0; i < waypointCount; i++)
         {
-            absolutePositions[i] = 
-                relativePositions[i] + 
+            absolutePositions[i] =
+                relativePositions[i] +
                 new Vector2(transform.position.x, transform.position.y);
         }
     }
 
     private void FixedUpdate()
     {
-        UpdateRaycastOrigins();
         if (Time.time >= currentWaitTime)
         {
+            UpdateRaycastOrigins();
             Vector2 displacement = CalculatePlatformDisplacement();
             if (displacement.y > 0)
             {
@@ -84,11 +83,38 @@ public class PlatformController2D : RaycastBody2D
         return position - new Vector2(transform.position.x, transform.position.y);
     }
 
+    /// <summary>
+    /// Move moveable objects on top of platform by the same displacement.
+    /// </summary>
     private void MoveOthers(Vector2 displacement)
     {
         HashSet<Transform> hasDetected = new HashSet<Transform>();
 
+        if (displacement.x != 0 || displacement.y != 0)
+        {
+            float rayLength = Mathf.Abs(displacement.y) + skinWidth * 2f;
+            Vector2 origin = origins.topLeft;
 
+            for (int i = 0; i < verticalRayCount; i++)
+            {
+                if (i > 0)
+                    origin += Vector2.right * verticalRaySpacing;
+                RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.up, rayLength, moveableLayer);
+                if (hit && !hasDetected.Contains(hit.transform) && hit.distance != 0)
+                {
+                    hasDetected.Add(hit.transform);
+                    CharacterController2D controller;
+                    if (cached.ContainsKey(hit.transform))
+                        controller = cached[hit.transform];
+                    else
+                    {
+                        controller = hit.transform.GetComponent<CharacterController2D>();
+                        cached.Add(hit.transform, controller);
+                    }
+                    controller.Move(displacement, true);
+                }
+            }
+        }
     }
 
     private void OnDrawGizmos()
@@ -98,7 +124,7 @@ public class PlatformController2D : RaycastBody2D
             Gizmos.color = Color.red;
             for (int i = 0; i < relativePositions.Length; i++)
             {
-                Vector2 position = 
+                Vector2 position =
                     (Application.isPlaying) ? absolutePositions[i] : relativePositions[i] + new Vector2(transform.position.x, transform.position.y);
                 Gizmos.DrawSphere(position, 0.1f);
             }

@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class RaycastBody2D : MonoBehaviour
 {
-    [SerializeField] protected LayerMask collidable;
     [SerializeField] private float raySpacing = 0.25f;
     protected const float skinWidth = 0.015f;
     protected int horizontalRayCount, verticalRayCount;

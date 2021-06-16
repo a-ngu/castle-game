@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController2D))]
@@ -20,7 +18,7 @@ public class Player : MonoBehaviour
     private float currentSmoothVelocity;
 
     [Header("Input Sensitivity")]
-    [SerializeField] private float statePersistance = 0.2f;
+    [SerializeField] private float persistanceTime = 0.2f;
 
     // State tracking
     private Vector2 input;
@@ -76,7 +74,7 @@ public class Player : MonoBehaviour
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         if (Input.GetKeyDown(KeyCode.Space))
-            jumpingTimer = statePersistance;
+            jumpingTimer = persistanceTime;
         if (Input.GetKeyUp(KeyCode.Space))
             endJump = true;
     }
@@ -84,16 +82,16 @@ public class Player : MonoBehaviour
     private void CheckState()
     {
         if (controller.status.below)
-            groundedTimer = statePersistance;
+            groundedTimer = persistanceTime;
     }
 
     private void CalculateVelocity()
     {
         // Horizontal Velocity
         velocity.x = Mathf.SmoothDamp(
-            velocity.x, 
+            velocity.x,
             input.x * movementSpeed,
-            ref currentSmoothVelocity, 
+            ref currentSmoothVelocity,
             (controller.status.below) ? smoothTimeGrounded : smoothTimeAirborne);
         // Vertical Velocity
         if (controller.status.below || controller.status.above)

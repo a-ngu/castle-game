@@ -1,11 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterController2D : RaycastBody2D
 {
     [SerializeField] private bool debugMode = false;
+    [SerializeField] protected LayerMask collidableLayer;
     public CollisionStatus status;
 
     protected override void Start()
@@ -50,8 +48,8 @@ public class CharacterController2D : RaycastBody2D
 
             if (debugMode)
                 Debug.DrawRay(origin, directionX * rayLength * Vector2.right, Color.red, 0.02f);
-            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * directionX, rayLength, collidable);
-                        
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * directionX, rayLength, collidableLayer);
+
             if (hit && hit.distance != 0)
             {
                 rayLength = hit.distance;
@@ -85,7 +83,7 @@ public class CharacterController2D : RaycastBody2D
 
             if (debugMode)
                 Debug.DrawRay(origin, directionY * rayLength * Vector2.up, Color.red, 0.02f);
-            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.up * directionY, rayLength, collidable);
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.up * directionY, rayLength, collidableLayer);
 
             if (hit && hit.distance != 0)
             {
