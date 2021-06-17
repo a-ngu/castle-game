@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxHeight = 4f;
     [SerializeField] private float timeToMaxHeight = 0.4f;
     [Range(0, 1)] [SerializeField] private float endJumpDamping = 0.5f;
+    [Range(0, 1)] [SerializeField] private float wallFallDamping = 0.5f;
     private float gravity;
     private float initialJumpVelocity;
     // Movement Smoothing
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     private Vector2 input;
     private float jumpingTimer, groundedTimer;
     private bool jumping, canDoubleJump, endJump;
+    private bool onWall;
     private Vector2 previousVelocity, velocity;
 
     private CharacterController2D controller;
@@ -44,13 +46,14 @@ public class Player : MonoBehaviour
         ProcessInput();
         CheckState();
 
-        if (jumpingTimer > 0 && groundedTimer > 0)
+        // Jumping
+        if (jumpingTimer > 0 && (groundedTimer > 0 || onWall))
         {
             jumping = canDoubleJump = true;
             jumpingTimer = 0;
             groundedTimer = 0;
         }
-        if (jumpingTimer > 0 && groundedTimer <= 0 && canDoubleJump)
+        if (jumpingTimer > 0 && (groundedTimer <= 0 || !onWall) && canDoubleJump)
         {
             jumping = true;
             canDoubleJump = false;
@@ -60,6 +63,9 @@ public class Player : MonoBehaviour
             jumpingTimer -= Time.deltaTime;
         if (groundedTimer > 0)
             groundedTimer -= Time.deltaTime;
+
+        // Wall anchoring
+        
     }
 
     private void FixedUpdate()
@@ -83,6 +89,8 @@ public class Player : MonoBehaviour
     {
         if (controller.status.below)
             groundedTimer = persistanceTime;
+        if (controller.status.left || controller.status.right)
+            onWall = !controller.status.below;
     }
 
     private void CalculateVelocity()
@@ -99,6 +107,7 @@ public class Player : MonoBehaviour
         if (jumping)
         {
             jumping = false;
+            onWall = false;
             velocity.y = initialJumpVelocity;
         }
         if (endJump)
@@ -108,5 +117,8 @@ public class Player : MonoBehaviour
                 velocity.y *= endJumpDamping;
         }
         velocity.y += gravity * Time.fixedDeltaTime;
+
+        if (onWall && velocity.y < 0)
+            velocity.y *= wallFallDamping;
     }
 }
