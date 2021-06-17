@@ -358,7 +358,7 @@ MonoBehaviour:
   moveableLayer:
     serializedVersion: 2
     m_Bits: 256
-  showWaypoints: 1
+  showWaypoints: 0
   relativePositions:
   - {x: 0, y: 0}
   - {x: 0, y: 2}
@@ -594,6 +594,9 @@ MonoBehaviour:
   maxHeight: 4
   timeToMaxHeight: 0.4
   endJumpDamping: 0.5
+  wallSlideDamping: 0.5
+  wallJumpAngleInward: 85
+  wallJumpAngleOutward: 60
   smoothTimeAirborne: 0.2
   smoothTimeGrounded: 0.1
   persistanceTime: 0.2
