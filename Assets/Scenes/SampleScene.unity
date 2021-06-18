@@ -244,6 +244,7 @@ GameObject:
   - component: {fileID: 286563503}
   - component: {fileID: 286563502}
   - component: {fileID: 286563505}
+  - component: {fileID: 286563506}
   m_Layer: 9
   m_Name: Platform
   m_TagString: Untagged
@@ -354,18 +355,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db205fa09c0ed77458c38fb15c23c67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raySpacing: 0.25
-  moveableLayer:
+  _moveableLayer:
     serializedVersion: 2
     m_Bits: 256
-  showWaypoints: 0
-  relativePositions:
+  _showWaypoints: 1
+  _relativePositions:
   - {x: 0, y: 0}
   - {x: 0, y: 2}
   - {x: -2, y: 2}
-  cyclic: 1
-  waitTime: 0.5
-  movementSpeed: 3
+  _cyclic: 1
+  _waitTime: 0.5
+  Enabled: 1
+  _movementSpeed: 3
+--- !u!114 &286563506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 286563501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20ee89181b5bcf4bb09ce160bf78736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _raySpacing: 0.25
 --- !u!1 &313639353
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +585,7 @@ GameObject:
   - component: {fileID: 2118204468}
   - component: {fileID: 2118204471}
   - component: {fileID: 2118204466}
+  - component: {fileID: 2118204467}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -600,6 +615,19 @@ MonoBehaviour:
   smoothTimeAirborne: 0.2
   smoothTimeGrounded: 0.1
   persistanceTime: 0.2
+--- !u!114 &2118204467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118204465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20ee89181b5bcf4bb09ce160bf78736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _raySpacing: 0.25
 --- !u!61 &2118204468
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -703,8 +731,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c1a062301aab94d9a986d74676ab3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raySpacing: 0.25
-  debugMode: 0
-  collidableLayer:
+  _collidableLayer:
     serializedVersion: 2
     m_Bits: 512
