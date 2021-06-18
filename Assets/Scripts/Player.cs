@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxHeight = 4f;
     [SerializeField] private float timeToMaxHeight = 0.4f;
     [Range(0, 1)] [SerializeField] private float endJumpDamping = 0.5f;
+    [Range(0, 1)] [SerializeField] private float wallSlideDamping = 0.5f;
+    [Range(0, 90)] [SerializeField] private float wallJumpAngleInward = 80f;
+    [Range(0, 90)] [SerializeField] private float wallJumpAngleOutward = 60f;
     private float gravity;
     private float initialJumpVelocity;
     // Movement Smoothing
@@ -22,8 +25,15 @@ public class Player : MonoBehaviour
 
     // State tracking
     private Vector2 input;
-    private float jumpingTimer, groundedTimer;
+
+    private float groundedTimer;
+
+    private float jumpingTimer;
     private bool jumping, canDoubleJump, endJump;
+
+    private float directionToWall;
+    private bool onWall;
+
     private Vector2 previousVelocity, velocity;
 
     private CharacterController2D controller;
@@ -39,18 +49,20 @@ public class Player : MonoBehaviour
         gravity = -2 * maxHeight / Mathf.Pow(timeToMaxHeight, 2);
         initialJumpVelocity = 2 * maxHeight / timeToMaxHeight;
     }
+
     private void Update()
     {
         ProcessInput();
         CheckState();
 
-        if (jumpingTimer > 0 && groundedTimer > 0)
+        // Jumping
+        if (jumpingTimer > 0 && (groundedTimer > 0 || onWall))
         {
             jumping = canDoubleJump = true;
             jumpingTimer = 0;
             groundedTimer = 0;
         }
-        if (jumpingTimer > 0 && groundedTimer <= 0 && canDoubleJump)
+        if (jumpingTimer > 0 && groundedTimer <= 0 && !onWall && canDoubleJump)
         {
             jumping = true;
             canDoubleJump = false;
@@ -82,24 +94,51 @@ public class Player : MonoBehaviour
     private void CheckState()
     {
         if (controller.status.below)
+        {
             groundedTimer = persistanceTime;
+            onWall = false;
+        }
+        else
+        {
+            if (controller.status.left && velocity.y < 0)
+            {
+                onWall = true;
+                directionToWall = -1;
+            }
+            else if (controller.status.right && velocity.y < 0)
+            {
+                onWall = true;
+                directionToWall = 1;
+            }
+            else onWall = false;
+        }
     }
 
     private void CalculateVelocity()
     {
         // Horizontal Velocity
-        velocity.x = Mathf.SmoothDamp(
-            velocity.x,
-            input.x * movementSpeed,
-            ref currentSmoothVelocity,
-            (controller.status.below) ? smoothTimeGrounded : smoothTimeAirborne);
+        if (!onWall)
+        {
+            velocity.x = Mathf.SmoothDamp(
+                velocity.x,
+                input.x * movementSpeed,
+                ref currentSmoothVelocity,
+                (controller.status.below) ? smoothTimeGrounded : smoothTimeAirborne);
+        }
         // Vertical Velocity
         if (controller.status.below || controller.status.above)
             velocity.y = 0;
         if (jumping)
         {
             jumping = false;
-            velocity.y = initialJumpVelocity;
+            if (onWall)
+            {
+                onWall = false;
+                float activeAngle = (input.x == directionToWall) ? wallJumpAngleInward : wallJumpAngleOutward;
+                velocity.x = initialJumpVelocity * Mathf.Cos(Mathf.Deg2Rad * activeAngle) * directionToWall * -1;
+                velocity.y = initialJumpVelocity * Mathf.Sin(Mathf.Deg2Rad * activeAngle);
+            }
+            else velocity.y = initialJumpVelocity;
         }
         if (endJump)
         {
@@ -107,6 +146,9 @@ public class Player : MonoBehaviour
             if (velocity.y > 0)
                 velocity.y *= endJumpDamping;
         }
+
         velocity.y += gravity * Time.fixedDeltaTime;
+        if (onWall && velocity.y < 0)
+            velocity.y *= wallSlideDamping;
     }
 }

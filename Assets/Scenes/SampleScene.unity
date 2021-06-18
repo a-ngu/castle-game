@@ -358,7 +358,7 @@ MonoBehaviour:
   moveableLayer:
     serializedVersion: 2
     m_Bits: 256
-  showWaypoints: 1
+  showWaypoints: 0
   relativePositions:
   - {x: 0, y: 0}
   - {x: 0, y: 2}
@@ -569,7 +569,6 @@ GameObject:
   - component: {fileID: 2118204470}
   - component: {fileID: 2118204469}
   - component: {fileID: 2118204468}
-  - component: {fileID: 2118204467}
   - component: {fileID: 2118204471}
   - component: {fileID: 2118204466}
   m_Layer: 8
@@ -595,30 +594,12 @@ MonoBehaviour:
   maxHeight: 4
   timeToMaxHeight: 0.4
   endJumpDamping: 0.5
+  wallSlideDamping: 0.5
+  wallJumpAngleInward: 85
+  wallJumpAngleOutward: 60
   smoothTimeAirborne: 0.2
   smoothTimeGrounded: 0.1
   persistanceTime: 0.2
---- !u!50 &2118204467
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118204465}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &2118204468
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -723,7 +704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   raySpacing: 0.25
-  debugMode: 1
+  debugMode: 0
   collidableLayer:
     serializedVersion: 2
     m_Bits: 512
