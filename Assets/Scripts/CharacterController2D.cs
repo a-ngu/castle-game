@@ -105,7 +105,22 @@ public class CharacterController2D : RaycastBody2D
     /// </summary>
     private void AdjustCorner(ref Vector2 displacement)
     {
-        // TODO
+        float direcitonX = Mathf.Sign(displacement.x);
+        float directionY = Mathf.Sign(displacement.y);
+        float rayLength = displacement.magnitude;
+
+        Vector2 origin;
+        if (direcitonX > 0 && directionY > 0)
+            origin = origins.topRight;
+        else if (direcitonX > 0 && directionY < 0)
+            origin = origins.bottomRight;
+        else if (direcitonX < 0 && directionY > 0)
+            origin = origins.topLeft;
+        else origin = origins.bottomLeft;
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, displacement.normalized, rayLength, collidableLayer);
+        if (hit && hit.distance != 0)
+            displacement = displacement.normalized * ((hit.distance - skinWidth) / rayLength);
     }
 
     public struct CollisionStatus

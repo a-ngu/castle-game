@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxHeight = 4f;
     [SerializeField] private float timeToMaxHeight = 0.4f;
     [Range(0, 1)] [SerializeField] private float endJumpDamping = 0.5f;
-    [Range(0, 1)] [SerializeField] private float wallSlideDamping = 0.5f;
+    [Range(0, 1)] [SerializeField] private float wallSlideDamping = 0.8f;
     [Range(0, 90)] [SerializeField] private float wallJumpAngleInward = 80f;
     [Range(0, 90)] [SerializeField] private float wallJumpAngleOutward = 60f;
     private float gravity;
