@@ -1,12 +1,14 @@
-using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Attribute
 {
+    [Serializable]
     public class Attribute
     {
-        private int _baseValue;
+        [SerializeField] private int _baseValue;
         private List<AttributeModifier> _modifiers;
 
         private bool _isDirty;
@@ -43,7 +45,7 @@ namespace Game.Attribute
             _isDirty = true;
         }
 
-        public void RemoveSource(Object source)
+        public void RemoveSource(object source)
         {
             for (int i = _modifiers.Count - 1; i >= 0; i--)
             {
