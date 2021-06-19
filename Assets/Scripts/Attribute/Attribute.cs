@@ -1,14 +1,12 @@
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Attribute
+namespace CastleGame
 {
-    [Serializable]
     public class Attribute
     {
-        [SerializeField] private int _baseValue;
+        private int _baseValue;
         private List<AttributeModifier> _modifiers;
 
         private bool _isDirty;

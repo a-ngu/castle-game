@@ -1,7 +1,6 @@
 using UnityEngine;
-using Game.Attribute;
 
-namespace Game.Character.Player
+namespace CastleGame
 {
     [RequireComponent(typeof(CharacterController2D))]
     public class PlayerController : MonoBehaviour
