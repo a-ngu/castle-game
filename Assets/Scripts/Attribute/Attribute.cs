@@ -1,8 +1,8 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Attribute
+namespace CastleGame
 {
     public class Attribute
     {
@@ -43,7 +43,7 @@ namespace Game.Attribute
             _isDirty = true;
         }
 
-        public void RemoveSource(Object source)
+        public void RemoveSource(object source)
         {
             for (int i = _modifiers.Count - 1; i >= 0; i--)
             {

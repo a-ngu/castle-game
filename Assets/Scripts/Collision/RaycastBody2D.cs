@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game.Collision
+namespace CastleGame
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class RaycastBody2D : MonoBehaviour

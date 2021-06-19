@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Game.Collision;
-using Game.Character;
 
-namespace Game.Environment
+namespace CastleGame
 {
     [RequireComponent(typeof(RaycastBody2D))]
     public class PlatformController2D : MonoBehaviour
