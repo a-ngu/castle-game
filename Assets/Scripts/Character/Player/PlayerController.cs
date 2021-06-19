@@ -28,6 +28,8 @@ namespace CastleGame
         // State tracking
         private Vector2 _input;
 
+        public float FacingDirection { get; private set; }
+
         private float _groundedTimer;
 
         private float _jumpingTimer;
@@ -43,6 +45,7 @@ namespace CastleGame
         private void Start()
         {
             _controller = GetComponent<CharacterController2D>();
+            FacingDirection = 1;
             ComputePhysicalSettings();
         }
 
@@ -79,7 +82,17 @@ namespace CastleGame
         private void FixedUpdate()
         {
             CalculateVelocity();
-            _controller.Move(0.5f * Time.fixedDeltaTime * (_velocity + _prevVelocity));
+
+            Vector3 displacement = 0.5f * Time.fixedDeltaTime * (_velocity + _prevVelocity);
+            if (displacement.x > 0)
+            {
+                FacingDirection = 1;
+            }
+            if (displacement.x < 0)
+            {
+                FacingDirection = -1;
+            }
+            _controller.Move(displacement);
             _prevVelocity = _velocity;
         }
 
